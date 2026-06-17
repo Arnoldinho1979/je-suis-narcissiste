@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JE SUIS NARCISSISTE?</title>
+  <style>
+    :root {
+      --bg1: #120617;
+      --bg2: #2b1036;
+      --accent: #ffcf4a;
+      --text: #fff7e6;
+      --muted: #d8cbdc;
+      --card: rgba(255, 255, 255, 0.09);
+      --card-border: rgba(255, 255, 255, 0.22);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(255, 95, 162, 0.22), transparent 34%),
+        radial-gradient(circle at bottom right, rgba(255, 207, 74, 0.18), transparent 32%),
+        linear-gradient(135deg, var(--bg1), var(--bg2));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    main {
+      width: min(920px, 100%);
+      min-height: 620px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card {
+      width: 100%;
+      padding: clamp(28px, 6vw, 70px);
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 28px;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
+      backdrop-filter: blur(10px);
+      text-align: center;
+    }
+
+    h1 {
+      margin: 0 0 14px;
+      font-size: clamp(3rem, 9vw, 7.5rem);
+      line-height: 0.88;
+      letter-spacing: -0.06em;
+      text-transform: uppercase;
+    }
+
+    .subtitle {
+      margin: 0 auto 42px;
+      max-width: 760px;
+      font-size: clamp(1.25rem, 2.8vw, 2rem);
+      color: var(--muted);
+    }
+
+    .step {
+      margin: 0 0 18px;
+      font-size: clamp(1rem, 2vw, 1.35rem);
+      color: var(--accent);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-weight: 800;
+    }
+
+    .question {
+      max-width: 780px;
+      margin: 0 auto 34px;
+      font-size: clamp(1.6rem, 4vw, 3rem);
+      line-height: 1.08;
+      font-weight: 900;
+    }
+
+    .answers {
+      display: grid;
+      gap: 14px;
+      margin: 0 auto;
+      max-width: 580px;
+    }
+
+    button {
+      border: 0;
+      border-radius: 999px;
+      padding: 16px 24px;
+      font-size: 1.08rem;
+      font-weight: 800;
+      color: #1b0b22;
+      background: var(--accent);
+      cursor: pointer;
+    }
+
+    button:hover {
+      filter: brightness(1.08);
+      transform: translateY(-1px);
+    }
+
+    .secondary {
+      background: #fff7e6;
+    }
+
+    .result-title {
+      font-size: clamp(2.2rem, 6vw, 5rem);
+      line-height: 0.95;
+      margin: 0 0 28px;
+    }
+
+    .result-text {
+      max-width: 760px;
+      margin: 0 auto 36px;
+      font-size: clamp(1.15rem, 2.2vw, 1.55rem);
+      line-height: 1.45;
+      text-align: left;
+    }
+
+    .loader-text {
+      font-family: "Courier New", Courier, monospace;
+      font-size: clamp(1.3rem, 3vw, 2rem);
+      line-height: 1.55;
+      color: #00ff88;
+      text-align: left;
+      background: rgba(0,0,0,0.5);
+      border: 2px inset rgba(255,255,255,0.25);
+      padding: 24px;
+      border-radius: 8px;
+    }
+
+    .blink {
+      animation: blink 800ms steps(2, start) infinite;
+    }
+
+    @keyframes blink {
+      to { visibility: hidden; }
+    }
+
+    .small-note {
+      margin-top: 22px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+<body>
+  <main id="app"></main>
+
+  <script>
+    const questions = [
+      {
+        text: "Wenn mein Haustier stirbt, dann sollte ich mich krankmelden dürfen.",
+        answers: [["Trifft völlig zu",1],["Trifft durchaus zu",2],["Bin unentschieden",3],["Trifft eher nicht zu",4],["Trifft gar nicht zu",5]]
+      },
+      {
+        text: "Wenn Menschen mir ihre Probleme schildern, erkenne ich oft schon nach wenigen Sätzen die eigentliche Ursache.",
+        answers: [["Trifft völlig zu",5],["Trifft durchaus zu",4],["Bin unentschieden",3],["Trifft eher nicht zu",2],["Trifft gar nicht zu",1]]
+      },
+      {
+        text: "Mich interessiert manchmal mehr, was hinter verschlossenen Türen geschieht, als ich zugeben würde.",
+        answers: [["Trifft völlig zu",4],["Trifft durchaus zu",3],["Bin unentschieden",3],["Trifft eher nicht zu",2],["Trifft gar nicht zu",1]]
+      },
+      {
+        text: "Kunst sollte vor allem überraschen, selbst dann, wenn nicht alle sie verstehen.",
+        answers: [["Trifft völlig zu",3],["Trifft durchaus zu",3],["Bin unentschieden",3],["Trifft eher nicht zu",2],["Trifft gar nicht zu",1]]
+      },
+      {
+        text: "Ich ärgere mich, wenn Menschen, die viel Aufmerksamkeit bekommen, eigentlich weniger leisten als andere.",
+        answers: [["Trifft völlig zu",5],["Trifft durchaus zu",4],["Bin unentschieden",3],["Trifft eher nicht zu",2],["Trifft gar nicht zu",1]]
+      },
+      {
+        text: "Wenn ich etwas Besonderes erlebt habe, möchte ich es gerne mit anderen teilen.",
+        answers: [["Trifft völlig zu",4],["Trifft durchaus zu",3],["Bin unentschieden",3],["Trifft eher nicht zu",2],["Trifft gar nicht zu",1]]
+      },
+      {
+        text: "Menschen sollten häufiger an sich selbst denken und besser auf die eigenen Bedürfnisse achtgeben.",
+        answers: [["Trifft völlig zu",4],["Trifft durchaus zu",3],["Bin unentschieden",3],["Trifft eher nicht zu",2],["Trifft gar nicht zu",1]]
+      },
+      {
+        text: "Es irritiert mich, wenn ich merke, dass ich für jemanden nicht so besonders bin wie ich gedacht habe.",
+        answers: [["Trifft völlig zu",5],["Trifft durchaus zu",4],["Bin unentschieden",3],["Trifft eher nicht zu",2],["Trifft gar nicht zu",1]]
+      },
+      {
+        text: "Ich habe schon einmal im Alltagsleben eine Rolle gespielt, um kompetenter und souveräner zu wirken.",
+        answers: [["Trifft völlig zu",4],["Trifft durchaus zu",3],["Bin unentschieden",3],["Trifft eher nicht zu",2],["Trifft gar nicht zu",1]]
+      },
+      {
+        text: "Wenn ich einen Raum betrete, frage ich mich manchmal, welchen Eindruck ich auf die anderen mache.",
+        answers: [["Trifft völlig zu",5],["Trifft durchaus zu",4],["Bin unentschieden",3],["Trifft eher nicht zu",2],["Trifft gar nicht zu",1]]
+      }
+    ];
+
+    const results = [
+      {
+        min: 0,
+        max: 22,
+        title: "Die Krankenschwester Vera",
+        text: "Sie halten die Welt zusammen, während andere reden. Sie hören zu, kümmern sich und übernehmen Verantwortung – oft, ohne dafür Applaus zu bekommen. Menschen wie Sie sind systemrelevant, auch außerhalb des Krankenhauses. Aber Vorsicht: Wer immer nur für andere sorgt, vergisst manchmal die eigenen Bedürfnisse. Trotzdem: Herzlichen Glückwunsch!"
+      },
+      {
+        min: 23,
+        max: 28,
+        title: "Klothilde",
+        text: "Sie fühlen viel und zweifeln viel. Die Welt ist kompliziert. Sie nehmen Verluste ernst, suchen Nähe und glauben trotz aller Enttäuschungen weiterhin an Menschen. Das macht das Leben nicht einfacher – aber oft menschlicher. Sie wissen: Ein toter Kater ist niemals nur ein toter Kater. Wer liebt, macht sich verwundbar. Und wer verwundbar ist, lebt."
+      },
+      {
+        min: 29,
+        max: 34,
+        title: "Der Liftboy",
+        text: "Sie beobachten Menschen sehr genau. Vielleicht zu genau. Ihnen entgeht wenig. Sie hören Zwischentöne, merken sich Gesichter und erinnern sich an Geschichten, die andere längst vergessen haben. Sie wissen oft früher als andere, wer mit wem spricht, wer schweigt und wer nur eine Rolle spielt. Wie der Liftboy der Oper Ich, ich, ich bewegen Sie sich zwischen den Stockwerken des Lebens: mal oben, mal unten, selten ganz im Mittelpunkt – und doch mit dem besten Überblick. Aber Vorsicht: Wer immer nur andere beobachtet, läuft Gefahr, die wichtigste Frage zu vergessen: In welchem Stockwerk befinde ich mich eigentlich selbst?"
+      },
+      {
+        min: 35,
+        max: 40,
+        title: "Dr. Giovanni",
+        text: "Sie haben zu allem eine Theorie. Hören Sie manchmal auch zu? Sie analysieren schnell, erkennen Muster und lieben kluge Erklärungen. Das kann hilfreich sein – solange die Menschen nicht hinter den Theorien verschwinden. Nicht jedes Problem ist ein Symptom! Und nicht jede Begegnung braucht eine Diagnose (oder einen Facebook-Post dazu, ähem). Manchmal möchte jemand keine Analyse. Sondern ein Taschentuch. Also, vielleicht reicht nächstes Mal ein „Tempo“ – und etwas mehr Langsamkeit …"
+      },
+      {
+        min: 41,
+        max: 50,
+        title: "Je suis narcissiste",
+        text: "Willkommen im Club. Die Oper handelt von Ihnen. Und von uns allen. Sie wissen, was Sie wollen. Sie treten auf, erzählen Geschichten und möchten gesehen werden. Damit sind Sie keineswegs allein. Denn die Wahrheit lautet: Wir alle leben in einer Welt der Profile, Spiegel und Bühnen. Die Frage ist nicht, ob wir narzisstisch sind, sondern: Wie viel „Ich“ braucht ein Mensch – und wann wird aus „Ich“ nur noch „Ich, ich, ich“?"
+      }
+    ];
+
+    const app = document.getElementById("app");
+    let currentStep = 0;
+    let score = 0;
+
+    function renderStart() {
+      currentStep = 0;
+      score = 0;
+      app.innerHTML = `
+        <section class="card">
+          <h1>JE SUIS NARCISSISTE?</h1>
+          <p class="subtitle">Der Selbsttest zur Oper <em>Ich, ich, ich</em></p>
+          <button onclick="renderQuestion()">Test starten</button>
+          <p class="small-note">Keine medizinische Diagnose. Nur ein kleiner Blick in den Spiegel.</p>
+        </section>
+      `;
+    }
+
+    function renderQuestion() {
+      const q = questions[currentStep];
+      const buttons = q.answers.map(([label, value]) =>
+        `<button class="secondary" onclick="answer(${value})">${label}</button>`
+      ).join("");
+
+      app.innerHTML = `
+        <section class="card">
+          <div class="step">Schritt ${currentStep + 1} von 10</div>
+          <div class="question"><strong>${q.text}</strong></div>
+          <div class="answers">${buttons}</div>
+        </section>
+      `;
+    }
+
+    function answer(value) {
+      score += value;
+      currentStep++;
+
+      if (currentStep < questions.length) {
+        renderQuestion();
+      } else {
+        renderProcessing();
+      }
+    }
+
+    function renderProcessing() {
+      app.innerHTML = `
+        <section class="card">
+          <div class="loader-text">
+            Ihre Antwort wird verarbeitet. Bitte warten Sie …<br>
+            Bla bla bla …<br>
+            Nur noch einen Moment …<br>
+            Bla bla bla …<br>
+            Gleich kommt’s!<br>
+            Bla bla bla …<br>
+            Jetzt ist es fast schon so weit! <span class="blink">█</span>
+          </div>
+        </section>
+      `;
+
+      setTimeout(renderResult, 7000);
+    }
+
+    function getResult() {
+      return results.find(r => score >= r.min && score <= r.max) || results[results.length - 1];
+    }
+
+    function renderResult() {
+      const result = getResult();
+      app.innerHTML = `
+        <section class="card">
+          <h2 class="result-title">${result.title}</h2>
+          <div class="result-text">${result.text.replaceAll("Ich, ich, ich", "<em>Ich, ich, ich</em>")}</div>
+          <button onclick="renderStart()">Test neu starten</button>
+        </section>
+      `;
+    }
+
+    renderStart();
+  </script>
+</body>
+</html>
